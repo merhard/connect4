@@ -19,18 +19,20 @@ class Connect4
 
 
   def take_turn(player)
-    puts "\n"
-    board.display_board
-    puts "\n#{player.values.first}, what is your move? (A-#{board.last_column})"
-    move = gets.chomp.upcase
+    while true
+      puts "\n"
+      board.display_board
+      puts "\n#{player.values.first}, what is your move? (A-#{board.last_column})"
+      move = gets.chomp.upcase
 
-    if move_valid?(move)
-      piece = player.keys.first
-      board.make_move(move, piece)
-    else
-      system("clear")
-      puts "Please make a valid move."
-      take_turn(player)
+      if move_valid?(move)
+        piece = player.keys.first
+        board.make_move(move, piece)
+        break
+      else
+        system("clear")
+        puts "Please make a valid move."
+      end
     end
 
     system("clear")
@@ -167,6 +169,7 @@ class Connect4
       begin_game
     else
       puts "Thanks for playing.\n\n\n\n"
+
     end
   end
 
