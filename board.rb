@@ -1,17 +1,19 @@
 class Board
 
-  attr_reader :board, :num_rows, :num_columns
+  attr_reader :num_rows, :last_column
+  attr_accessor :board
 
   def initialize
     board_dimensions = get_board_dimensions
     @num_rows = board_dimensions[0]
-    @num_columns = board_dimensions[1]
+    num_columns = board_dimensions[1]
     @board = {}
     key = "A"
-    @num_columns.times do
+    num_columns.times do
       @board[key] = []
       key.next!
     end
+    @last_column = key
   end
 
   def get_board_dimensions
@@ -43,7 +45,7 @@ class Board
     while current_row > 0
       print "| "
       current_column = "A"
-      while current_column <= board.keys.last
+      while current_column <= last_column
         if board[current_column][current_row] == nil
           print "  "
         else
@@ -60,6 +62,10 @@ class Board
       print "#{letter} "
     end
     puts "\n"
+  end
+
+  def make_move(move, piece)
+    board[move].push(piece)
   end
 
 

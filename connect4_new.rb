@@ -11,27 +11,29 @@ class Connect4
     @players = Players.new
   end
 
+
   def begin
     system("clear")
     take_turn(players.player1)
   end
 
+
   def take_turn(player)
-    puts"\n"
+    puts "\n"
     board.display_board
-    last_column = board.board.keys.last
-    puts "\n#{player.values.first}, what is your move? (A-#{last_column})"
+    puts "\n#{player.values.first}, what is your move? (A-#{board.last_column})"
     move = gets.chomp.upcase
 
     if move_valid?(move)
-      board.make_move(move)
+      piece = player.keys.first
+      board.make_move(move, piece)
     else
       system("clear")
       puts "Please make a valid move."
       take_turn(player)
     end
 
-    if game_over?
+    if game_over?(player, move)
       # execute game over condition
     elsif player == players.player1
       take_turn(players.player2)
@@ -40,6 +42,7 @@ class Connect4
     end
 
   end
+
 
   def move_valid?(key)
     current_board = board.board
@@ -55,36 +58,86 @@ class Connect4
   end
 
 
-  def old_take_turn(player)
-    system("clear")
+  def game_over?(player, move)
+    if winner?(player, move)
+      # execute winner condition
+      true
+    elsif stalemate?
+      # execute stalemate condition
+      true
+    else
+      false
+    end
+  end
 
-    while true
-      puts"\n"
-      board.display_board
-      last_column = board.board.keys.last
-      puts "\n#{player.values.first}, what is your move? (A-#{last_column})"
-      move = gets.chomp.upcase
+  def winner?(player, move)
+    piece = player.keys.first
+    if vertical?(move, piece)
+      true
+    elsif horizontal?(move, piece)
+      true
+    elsif diagonal?(move, piece)
+      true
+    else
+      false
+    end
+  end
 
-      unless checks_valid(move)
-        system("clear")
-        puts "Please make a valid move."
+
+  def vertical?(move, piece)
+    current_board = board.board
+    top_4_pieces = current_board[move].last(4)
+    total_matching_pieces = top_4_pieces.select { |item| item=piece }
+
+    if total_matching_pieces.length == 4
+      true
+    else
+      false
+    end
+  end
+
+
+  def horizontal?(move, piece)
+    current_board = board.board
+    row = current_board[move].length - 1
+
+    key = "A"
+    total_in_a_row = 0
+    while total_in_a_row != 4 && key <= board.last_column
+      if current_board[key][row] == piece
+        total_in_a_row += 1
       else
-        break
+        total_in_a_row = 0
       end
+      key.next!
     end
 
-    @board[move].push(player.keys[0])
-
-    if checks_win(player, move)
-      return winner(player)
-    elsif checks_stalemate
-      return stalemate
+    if total_in_a_row == 4
+      true
     else
-      if player.keys == [:x]
-        take_turn(@player_2)
-      else
-        take_turn(@player_1)
-      end
+      false
+    end
+  end
+
+
+  def diagonal?(move, piece)
+    # refactor to check for diagonal 4 in a row
+    false
+  end
+
+
+  def stalemate?
+    key = "A"
+    current_board = board.board
+
+    while key <= board.last_column && current_board[key].length == board.num_rows
+      key.next!
+    end
+
+    if key > board.last_column
+      true
+    else
+      false
     end
   end
 
