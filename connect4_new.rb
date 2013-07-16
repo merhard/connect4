@@ -78,11 +78,12 @@ class Connect4
 
   def winner?(player, move)
     piece = player.keys.first
-    if vertical?(move, piece)
+    current_board = board.board
+    if vertical?(current_board, move, piece)
       true
-    elsif horizontal?(move, piece)
+    elsif horizontal?(current_board, move, piece)
       true
-    elsif diagonal?(move, piece)
+    elsif diagonal?(current_board, move, piece)
       true
     else
       false
@@ -90,8 +91,7 @@ class Connect4
   end
 
 
-  def vertical?(move, piece)
-    current_board = board.board
+  def vertical?(current_board, move, piece)
     top_4_pieces = current_board[move].last(4)
     total_matching_pieces = top_4_pieces.select { |item| item == piece }
 
@@ -103,8 +103,7 @@ class Connect4
   end
 
 
-  def horizontal?(move, piece)
-    current_board = board.board
+  def horizontal?(current_board, move, piece)
     row = current_board[move].length - 1
 
     key = "A"
@@ -126,9 +125,93 @@ class Connect4
   end
 
 
-  def diagonal?(move, piece)
-    # refactor to check for diagonal 4 in a row
-    false
+  def diagonal?(current_board, move, piece)
+    column = current_board.keys.index(move)
+    row = current_board[move].length - 1
+
+    if diagonal_up?(current_board, row, column, piece)
+      true
+    elsif diagonal_down?(current_board, row, column, piece)
+      true
+    else
+      false
+    end
+  end
+
+
+  def diagonal_up?(current_board, row, column, piece) # from left to right
+    current_row, current_column_key = diagonal_up_starting_points(current_board, row, column)
+
+    total_in_a_row = 0
+    while total_in_a_row != 4 && current_column_key <= board.last_column && current_row < board.num_rows
+      if current_board[current_column_key][current_row] == piece
+        total_in_a_row += 1
+      else
+        total_in_a_row = 0
+      end
+      current_column_key.next!
+      current_row += 1
+    end
+
+    if total_in_a_row == 4
+      true
+    else
+      false
+    end
+  end
+
+
+  def diagonal_up_starting_points(current_board, row, column)
+    if column >= 3 && row >= 3
+      starting_column_key = current_board.keys[column - 3].dup
+      starting_row = row - 3
+    elsif column < row
+      starting_column_key = "A"
+      starting_row = row - column
+    elsif column > row
+      starting_column_key = current_board.keys[column - row].dup
+      starting_row = 0
+    else
+      starting_column_key = "A"
+      starting_row = 0
+    end
+
+    [starting_row, starting_column_key]
+  end
+
+
+  def diagonal_down?(current_board, row, column, piece) # from left to right
+    current_row, current_column_key = diagonal_down_starting_points(current_board, row, column)
+
+    total_in_a_row = 0
+    while total_in_a_row != 4 && current_column_key <= board.last_column && current_row >= 0
+      if current_board[current_column_key][current_row] == piece
+        total_in_a_row += 1
+      else
+        total_in_a_row = 0
+      end
+      current_column_key.next!
+      current_row -= 1
+    end
+
+    if total_in_a_row == 4
+      true
+    else
+      false
+    end
+  end
+
+
+  def diagonal_down_starting_points(current_board, row, column)
+    if column < 3
+      starting_column_key = "A"
+      starting_row = row + column
+    else
+      starting_column_key = current_board.keys[column - 3].dup
+      starting_row = row + 3
+    end
+
+    [starting_row, starting_column_key]
   end
 
 
