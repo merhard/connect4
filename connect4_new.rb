@@ -20,21 +20,10 @@ class Connect4
 
 
   def take_turn(player)
-    while true
-      puts "\n"
-      board.display_board
-      puts "\n#{player.values.first}, place your \"#{player.keys.first}\". (A-#{board.last_column})"
-      move = gets.chomp.upcase
+    move = get_move(player)
+    piece = player.keys.first
 
-      if move_valid?(move)
-        piece = player.keys.first
-        board.make_move(move, piece)
-        break
-      else
-        system("clear")
-        puts "Please make a valid move."
-      end
-    end
+    board.make_move(move, piece)
 
     system("clear")
 
@@ -45,7 +34,22 @@ class Connect4
     else
       take_turn(players.player1)
     end
+  end
 
+
+  def get_move(player)
+    puts "\n"
+    board.display_board
+    puts "\n#{player.values.first}, place your \"#{player.keys.first}\". (A-#{board.last_column})"
+    move = gets.chomp.upcase
+
+    if move_valid?(move)
+      move
+    else
+      system("clear")
+      puts "Please make a valid move."
+      get_move(player)
+    end
   end
 
 
