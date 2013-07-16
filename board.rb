@@ -13,7 +13,7 @@ class Board
       @board[key] = []
       key.next!
     end
-    @last_column = key
+    @last_column = @board.keys.last
   end
 
   def get_board_dimensions

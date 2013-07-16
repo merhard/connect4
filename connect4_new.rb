@@ -12,7 +12,7 @@ class Connect4
   end
 
 
-  def begin
+  def begin_game
     system("clear")
     take_turn(players.player1)
   end
@@ -34,7 +34,7 @@ class Connect4
     end
 
     if game_over?(player, move)
-      # execute game over condition
+      new_game
     elsif player == players.player1
       take_turn(players.player2)
     else
@@ -60,10 +60,10 @@ class Connect4
 
   def game_over?(player, move)
     if winner?(player, move)
-      # execute winner condition
+      winner(player)
       true
     elsif stalemate?
-      # execute stalemate condition
+      stalemate
       true
     else
       false
@@ -142,7 +142,35 @@ class Connect4
   end
 
 
+  def winner(player)
+    system("clear")
+    puts "\n"
+    board.display_board
+    puts "\n\nWinner, Winner, Chicken Dinner!!!!!"
+    puts "#{player.values.first} has won the game."
+  end
+
+
+  def stalemate
+    system("clear")
+    puts "\n"
+    board.display_board
+    puts "\n\nTwo rams butt heads."
+    puts "Stalemate."
+  end
+
+
+  def new_game
+    puts "\nDo you want to play again? (y/n)"
+    if gets.chomp.downcase == "y"
+      @board = Board.new
+      begin_game
+    else
+      puts "Thanks for playing.\n\n\n\n"
+    end
+  end
+
 end
 
 game = Connect4.new
-game.begin
+game.begin_game
