@@ -8,6 +8,7 @@ class Connect4
   def initialize
     system("clear")
     @board = Board.new
+    system("clear")
     @players = Players.new
   end
 
@@ -22,7 +23,7 @@ class Connect4
     while true
       puts "\n"
       board.display_board
-      puts "\n#{player.values.first}, what is your move? (A-#{board.last_column})"
+      puts "\n#{player.values.first}, place your \"#{player.keys.first}\". (A-#{board.last_column})"
       move = gets.chomp.upcase
 
       if move_valid?(move)
@@ -73,6 +74,7 @@ class Connect4
       false
     end
   end
+
 
   def winner?(player, move)
     piece = player.keys.first
@@ -165,11 +167,11 @@ class Connect4
   def new_game
     puts "\nDo you want to play again? (y/n)"
     if gets.chomp.downcase == "y"
+      system("clear")
       @board = Board.new
       begin_game
     else
-      puts "Thanks for playing.\n\n\n\n"
-
+      puts "\nThanks for playing.\n\n\n\n"
     end
   end
 

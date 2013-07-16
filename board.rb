@@ -16,29 +16,44 @@ class Board
     @last_column = @board.keys.last
   end
 
+
   def get_board_dimensions
-    puts 'Do you want a custom board?'
+    puts 'Do you want a custom board? (y/n)'
     puts '(standard size is 6rows by 7columns)'
     answer = gets.chomp.downcase
-    if answer == 'y' || answer == 'yes'
+    if answer == 'y'
       num_rows = get_num_rows
       num_columns = get_num_columns
       [num_rows,num_columns]
     else
-      puts 'Standard size it is! (6x7)'
       [6,7]
     end
   end
 
+
   def get_num_rows
-    puts 'How many rows high?'
-    gets.chomp.to_i
+    puts "\nHow many rows high? (min:4)"
+    rows = gets.chomp.to_i
+    if rows < 4
+      puts 'Please enter a valid number of rows.'
+      get_num_rows
+    else
+      rows
+    end
   end
 
+
   def get_num_columns
-    puts 'How many columns across?'
-    gets.chomp.to_i
+    puts "\nHow many columns across? (min:4)"
+    columns = gets.chomp.to_i
+    if columns < 4
+      puts 'Please enter a valid number of columns.'
+      get_num_columns
+    else
+      columns
+    end
   end
+
 
   def display_board
     current_row = num_rows - 1
@@ -64,9 +79,9 @@ class Board
     puts "\n"
   end
 
+
   def make_move(move, piece)
     board[move].push(piece)
   end
-
 
 end
