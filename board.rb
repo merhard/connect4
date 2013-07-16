@@ -41,8 +41,8 @@ class Board
   end
 
   def display_board
-    current_row = num_rows
-    while current_row > 0
+    current_row = num_rows - 1
+    while current_row >= 0
       print "| "
       current_column = "A"
       while current_column <= last_column

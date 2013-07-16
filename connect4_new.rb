@@ -33,6 +33,8 @@ class Connect4
       take_turn(player)
     end
 
+    system("clear")
+
     if game_over?(player, move)
       new_game
     elsif player == players.player1
@@ -87,7 +89,7 @@ class Connect4
   def vertical?(move, piece)
     current_board = board.board
     top_4_pieces = current_board[move].last(4)
-    total_matching_pieces = top_4_pieces.select { |item| item=piece }
+    total_matching_pieces = top_4_pieces.select { |item| item == piece }
 
     if total_matching_pieces.length == 4
       true
@@ -143,7 +145,6 @@ class Connect4
 
 
   def winner(player)
-    system("clear")
     puts "\n"
     board.display_board
     puts "\n\nWinner, Winner, Chicken Dinner!!!!!"
@@ -152,7 +153,6 @@ class Connect4
 
 
   def stalemate
-    system("clear")
     puts "\n"
     board.display_board
     puts "\n\nTwo rams butt heads."
