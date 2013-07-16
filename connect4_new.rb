@@ -12,10 +12,50 @@ class Connect4
   end
 
   def begin
+    system("clear")
     take_turn(players.player1)
   end
 
   def take_turn(player)
+    puts"\n"
+    board.display_board
+    last_column = board.board.keys.last
+    puts "\n#{player.values.first}, what is your move? (A-#{last_column})"
+    move = gets.chomp.upcase
+
+    if move_valid?(move)
+      board.make_move(move)
+    else
+      system("clear")
+      puts "Please make a valid move."
+      take_turn(player)
+    end
+
+    if game_over?
+      # execute game over condition
+    elsif player == players.player1
+      take_turn(players.player2)
+    else
+      take_turn(players.player1)
+    end
+
+  end
+
+  def move_valid?(key)
+    current_board = board.board
+    if current_board.include?(key)
+      if current_board[key].length < board.num_rows
+        true
+      else
+        false
+      end
+    else
+      false
+    end
+  end
+
+
+  def old_take_turn(player)
     system("clear")
 
     while true
