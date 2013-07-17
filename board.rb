@@ -32,9 +32,9 @@ class Board
 
 
   def get_num_rows
-    puts "\nHow many rows high? (min:4)"
+    puts "\nHow many rows high? (min:4, max:25)"
     rows = gets.chomp.to_i
-    if rows < 4
+    if rows < 4 || rows > 25
       puts 'Please enter a valid number of rows.'
       get_num_rows
     else
@@ -44,9 +44,9 @@ class Board
 
 
   def get_num_columns
-    puts "\nHow many columns across? (min:4)"
+    puts "\nHow many columns across? (min:4, max:25)"
     columns = gets.chomp.to_i
-    if columns < 4
+    if columns < 4 || columns > 25
       puts 'Please enter a valid number of columns.'
       get_num_columns
     else
